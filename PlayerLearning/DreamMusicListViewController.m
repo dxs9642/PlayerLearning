@@ -7,33 +7,26 @@
 //
 
 #import "DreamMusicListViewController.h"
-#import "MJExtension.h"
 #import "DreamMusic.h"
 #import "DreamMusicListCell.h"
-#import "DreamMusicPlayViewController.h"
+#import "DreamPlayerController.h"
+#import "DreamMusicTool.h"
 
 @interface DreamMusicListViewController ()
-@property (nonatomic,strong) NSArray *musics;
-@property (nonatomic,strong) DreamMusicPlayViewController *player;
+@property (nonatomic,strong) DreamPlayerController *player;
 @end
 
 
 @implementation DreamMusicListViewController
 
-- (DreamMusicPlayViewController *)player{
+- (DreamPlayerController *)player{
     if (!_player){
-        _player = [[DreamMusicPlayViewController alloc] init];
+        _player = [[DreamPlayerController alloc] init];
     }
     return _player;
 }
 
-- (NSArray *)musics{
-    if (!_musics){
-        _musics =  [DreamMusic objectArrayWithFilename:@"Musics.plist"];
-    }
-    
-    return _musics;
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -63,21 +56,27 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
 
-    return self.musics.count;
+    return [DreamMusicTool musics].count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     DreamMusicListCell *cell = [DreamMusicListCell cellWithTableView:tableView];
-    cell.music = self.musics[indexPath.row];
+    NSArray *musics = [DreamMusicTool musics];
+    cell.music = musics[indexPath.row];
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
+    
+    [DreamMusicTool setPlayingMusic:[DreamMusicTool musics][indexPath.row]];
+    
     [self.player show];
+    
+    
 }
 @end
 

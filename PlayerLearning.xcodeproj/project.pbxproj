@@ -51,7 +51,6 @@
 		D2168F4A1A84FF7700485DFF /* 339744.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2168F251A84FF7700485DFF /* 339744.mp3 */; };
 		D2168F4B1A84FF7700485DFF /* Musics.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2168F261A84FF7700485DFF /* Musics.plist */; };
 		D2168F541A85009800485DFF /* DreamMusicListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2168F531A85009800485DFF /* DreamMusicListViewController.m */; };
-		D2168F571A8500C100485DFF /* DreamMusicPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2168F561A8500C100485DFF /* DreamMusicPlayViewController.m */; };
 		D2168F5A1A85014200485DFF /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2168F591A85014200485DFF /* HomeViewController.m */; };
 		D2168F5D1A8503E700485DFF /* DreamMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = D2168F5C1A8503E700485DFF /* DreamMusic.m */; };
 		D25BC3541A85885200F40510 /* MJConst.m in Sources */ = {isa = PBXBuildFile; fileRef = D25BC3461A85885200F40510 /* MJConst.m */; };
@@ -65,7 +64,10 @@
 		D2C696311A85912500792BD6 /* Colours.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C696301A85912500792BD6 /* Colours.m */; };
 		D2C696351A85923F00792BD6 /* DreamMusicListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C696341A85923F00792BD6 /* DreamMusicListCell.m */; };
 		D2C696381A85A3D900792BD6 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C696371A85A3D900792BD6 /* UIView+Extension.m */; };
-		D2C6963A1A85AA3B00792BD6 /* DreamPlayingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C696391A85AA3B00792BD6 /* DreamPlayingViewController.xib */; };
+		D2E4EE451A85B9B00066AFAD /* DreamPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4EE431A85B9B00066AFAD /* DreamPlayerController.m */; };
+		D2E4EE461A85B9B00066AFAD /* DreamPlayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2E4EE441A85B9B00066AFAD /* DreamPlayerController.xib */; };
+		D2E4EE4A1A85BEB60066AFAD /* DreamMusicTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4EE491A85BEB60066AFAD /* DreamMusicTool.m */; };
+		D2E4EE501A85ECC00066AFAD /* DreamAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4EE4F1A85ECC00066AFAD /* DreamAudioTool.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,8 +132,6 @@
 		D2168F261A84FF7700485DFF /* Musics.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Musics.plist; sourceTree = "<group>"; };
 		D2168F521A85009700485DFF /* DreamMusicListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamMusicListViewController.h; sourceTree = "<group>"; };
 		D2168F531A85009800485DFF /* DreamMusicListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamMusicListViewController.m; sourceTree = "<group>"; };
-		D2168F551A8500C100485DFF /* DreamMusicPlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamMusicPlayViewController.h; sourceTree = "<group>"; };
-		D2168F561A8500C100485DFF /* DreamMusicPlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamMusicPlayViewController.m; sourceTree = "<group>"; };
 		D2168F581A85014200485DFF /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		D2168F591A85014200485DFF /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		D2168F5B1A8503E700485DFF /* DreamMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamMusic.h; sourceTree = "<group>"; };
@@ -160,7 +160,13 @@
 		D2C696341A85923F00792BD6 /* DreamMusicListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamMusicListCell.m; sourceTree = "<group>"; };
 		D2C696361A85A3D900792BD6 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		D2C696371A85A3D900792BD6 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
-		D2C696391A85AA3B00792BD6 /* DreamPlayingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamPlayingViewController.xib; sourceTree = "<group>"; };
+		D2E4EE421A85B9B00066AFAD /* DreamPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamPlayerController.h; sourceTree = "<group>"; };
+		D2E4EE431A85B9B00066AFAD /* DreamPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamPlayerController.m; sourceTree = "<group>"; };
+		D2E4EE441A85B9B00066AFAD /* DreamPlayerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamPlayerController.xib; sourceTree = "<group>"; };
+		D2E4EE481A85BEB60066AFAD /* DreamMusicTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamMusicTool.h; sourceTree = "<group>"; };
+		D2E4EE491A85BEB60066AFAD /* DreamMusicTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamMusicTool.m; sourceTree = "<group>"; };
+		D2E4EE4E1A85ECC00066AFAD /* DreamAudioTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamAudioTool.h; sourceTree = "<group>"; };
+		D2E4EE4F1A85ECC00066AFAD /* DreamAudioTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamAudioTool.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +208,7 @@
 		D2168ED71A84EFAB00485DFF /* PlayerLearning */ = {
 			isa = PBXGroup;
 			children = (
+				D2E4EE471A85BE8B0066AFAD /* Tool */,
 				D2168F4F1A84FFEF00485DFF /* Other */,
 				D2168F4E1A84FFEA00485DFF /* Model */,
 				D2168F4D1A84FFE500485DFF /* Controller */,
@@ -325,11 +332,11 @@
 				D2168EE01A84EFAB00485DFF /* ViewController.m */,
 				D2168F521A85009700485DFF /* DreamMusicListViewController.h */,
 				D2168F531A85009800485DFF /* DreamMusicListViewController.m */,
-				D2168F551A8500C100485DFF /* DreamMusicPlayViewController.h */,
-				D2168F561A8500C100485DFF /* DreamMusicPlayViewController.m */,
-				D2C696391A85AA3B00792BD6 /* DreamPlayingViewController.xib */,
 				D2168F581A85014200485DFF /* HomeViewController.h */,
 				D2168F591A85014200485DFF /* HomeViewController.m */,
+				D2E4EE421A85B9B00066AFAD /* DreamPlayerController.h */,
+				D2E4EE431A85B9B00066AFAD /* DreamPlayerController.m */,
+				D2E4EE441A85B9B00066AFAD /* DreamPlayerController.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -403,6 +410,17 @@
 				D2C696301A85912500792BD6 /* Colours.m */,
 			);
 			path = Colours;
+			sourceTree = "<group>";
+		};
+		D2E4EE471A85BE8B0066AFAD /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+				D2E4EE4E1A85ECC00066AFAD /* DreamAudioTool.h */,
+				D2E4EE4F1A85ECC00066AFAD /* DreamAudioTool.m */,
+				D2E4EE481A85BEB60066AFAD /* DreamMusicTool.h */,
+				D2E4EE491A85BEB60066AFAD /* DreamMusicTool.m */,
+			);
+			name = Tool;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -505,7 +523,6 @@
 				D2168F331A84FF7700485DFF /* nanquan@2x.jpg in Resources */,
 				D2168F3C1A84FF7700485DFF /* 12309111.lrc in Resources */,
 				D2168F3D1A84FF7700485DFF /* 14945107.lrc in Resources */,
-				D2C6963A1A85AA3B00792BD6 /* DreamPlayingViewController.xib in Resources */,
 				D2168F431A84FF7700485DFF /* 10736444.mp3 in Resources */,
 				D2168F441A84FF7700485DFF /* 120125029.mp3 in Resources */,
 				D2168F281A84FF7700485DFF /* bb_icon@2x.jpg in Resources */,
@@ -514,6 +531,7 @@
 				D2168F3E1A84FF7700485DFF /* 235319.lrc in Resources */,
 				D2168F461A84FF7700485DFF /* 14945107.mp3 in Resources */,
 				D2168F3A1A84FF7700485DFF /* 10736444.lrc in Resources */,
+				D2E4EE461A85B9B00066AFAD /* DreamPlayerController.xib in Resources */,
 				D2168F351A84FF7700485DFF /* wf@2x.jpg in Resources */,
 				D2168F301A84FF7700485DFF /* jj_icon@2x.png in Resources */,
 				D2168F3B1A84FF7700485DFF /* 120125029.lrc in Resources */,
@@ -544,21 +562,23 @@
 			files = (
 				D2C696381A85A3D900792BD6 /* UIView+Extension.m in Sources */,
 				D25BC3561A85885200F40510 /* MJIvar.m in Sources */,
+				D2E4EE501A85ECC00066AFAD /* DreamAudioTool.m in Sources */,
 				D2168F541A85009800485DFF /* DreamMusicListViewController.m in Sources */,
 				D2168EE11A84EFAB00485DFF /* ViewController.m in Sources */,
+				D2E4EE451A85B9B00066AFAD /* DreamPlayerController.m in Sources */,
 				D25BC3541A85885200F40510 /* MJConst.m in Sources */,
 				D25BC3551A85885200F40510 /* MJFoundation.m in Sources */,
 				D25BC3571A85885200F40510 /* MJType.m in Sources */,
 				D2168F5D1A8503E700485DFF /* DreamMusic.m in Sources */,
 				D2168EDE1A84EFAB00485DFF /* AppDelegate.m in Sources */,
 				D25BC3581A85885200F40510 /* NSObject+MJCoding.m in Sources */,
+				D2E4EE4A1A85BEB60066AFAD /* DreamMusicTool.m in Sources */,
 				D2168EDB1A84EFAB00485DFF /* main.m in Sources */,
 				D2C6962D1A858F6B00792BD6 /* UIImage+MJ.m in Sources */,
 				D2C696351A85923F00792BD6 /* DreamMusicListCell.m in Sources */,
 				D2C696311A85912500792BD6 /* Colours.m in Sources */,
 				D25BC35A1A85885200F40510 /* NSObject+MJKeyValue.m in Sources */,
 				D25BC3591A85885200F40510 /* NSObject+MJIvar.m in Sources */,
-				D2168F571A8500C100485DFF /* DreamMusicPlayViewController.m in Sources */,
 				D2168F5A1A85014200485DFF /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
