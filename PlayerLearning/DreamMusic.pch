@@ -1,0 +1,18 @@
+//
+//  DreamMusic.pch
+//  PlayerLearning
+//
+//  Created by 孙龙霄 on 2/7/15.
+//  Copyright (c) 2015 孙龙霄. All rights reserved.
+//
+
+#ifndef PlayerLearning_DreamMusic_pch
+#define PlayerLearning_DreamMusic_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "UIView+Extension.h"
+
+
+#endif
