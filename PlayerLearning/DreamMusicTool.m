@@ -23,6 +23,7 @@ static DreamMusic *_playingMusic;
     return _musics;
 }
 
+
 + (DreamMusic *)playingMusic{
     return _playingMusic;
 }
@@ -53,11 +54,6 @@ static DreamMusic *_playingMusic;
     
     
     _playingMusic = playingMusic;
-    
-    
-        
-        
-
     
 }
 

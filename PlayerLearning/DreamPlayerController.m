@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *duration;
 @property (weak, nonatomic) IBOutlet UIButton *slider;
 @property (weak, nonatomic) IBOutlet UIView *progressView;
+@property (weak, nonatomic) IBOutlet UIButton *progressShow;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
 
 
 
@@ -26,10 +28,16 @@
 @property (nonatomic,strong) NSTimer *progressTimer;
 @property (nonatomic,strong) AVAudioPlayer *player;
 
+
+
 - (IBAction)exit;
 - (IBAction)LyricOrPic:(UIButton *)sender;
 - (IBAction)progressTapGesture:(UITapGestureRecognizer *)sender;
 - (IBAction)sliderPanGesture:(UIPanGestureRecognizer *)sender;
+- (IBAction)playOrPause:(UIButton *)sender;
+- (IBAction)previousSong:(UIButton *)sender;
+- (IBAction)nextSong:(UIButton *)sender;
+
 
 
 
@@ -38,7 +46,9 @@
 @implementation DreamPlayerController
 
 - (void)viewDidLoad {
+
     [super viewDidLoad];
+    self.progressShow.layer.cornerRadius = 10;
 }
 
 - (void)show{
@@ -67,10 +77,10 @@
     DreamMusic *currentMusic = [DreamMusicTool playingMusic];
     
     if (!self.playingMusic||self.playingMusic != currentMusic) {
+        self.playButton.selected = YES;
         [self resetPlayingMusic:currentMusic];
-       self.player = [DreamAudioTool playMusic:self.playingMusic.filename];
+        self.player = [DreamAudioTool playMusic:self.playingMusic.filename];
         self.duration.text = [self strWithTime:self.player.duration];
-        
     }
     
 }
@@ -195,29 +205,84 @@
     
     CGPoint point = [sender translationInView:sender.view];
     [sender setTranslation:CGPointZero inView:sender.view];
+    
+    NSTimeInterval time;
+    
+    
     self.slider.x += point.x;
-    self.progressView.width = self.slider.center.x;
+
+    if (self.slider.x >= 0){
+        self.progressShow.x = self.slider.x;
+        self.progressView.width = self.slider.center.x;
+        CGFloat sliderMax = self.view.width - self.slider.width;
+        double percent = self.slider.x / sliderMax;
+        time = self.player.duration * percent;
+        [self.slider setTitle:[self strWithTime:time] forState:UIControlStateNormal];
+        [self.progressShow setTitle:[self strWithTime:time] forState:UIControlStateNormal];
+    }else{
+
+        time = 0;
+    }
+
+
     
-    CGFloat sliderMax = self.view.width - self.slider.width;
-    double percent = self.slider.x / sliderMax;
-    NSTimeInterval time = self.player.duration * percent;
-    [self.slider setTitle:[self strWithTime:time] forState:UIControlStateNormal];
+
     
-    
+
 
     
     if (sender.state == UIGestureRecognizerStateBegan){
 
         [self removeProgressTimer];
-        
+        self.progressShow.hidden = NO;
+
     }else if(sender.state == UIGestureRecognizerStateEnded){
         
-        self.player.currentTime = percent * self.player.duration;
+        self.player.currentTime = time;
         [self addProgressTimer];
+        self.progressShow.hidden = YES;
 
     }
     
 
+    
+}
+
+- (IBAction)playOrPause:(UIButton *)sender {
+
+    if (self.playButton.selected) {
+        self.playButton.selected = NO;
+        [DreamAudioTool pauseMusic:self.playingMusic.filename];
+
+    }else{
+        self.playButton.selected = YES;
+        [DreamAudioTool playMusic:self.playingMusic.filename];
+
+    }
+
+    
+}
+
+- (IBAction)previousSong:(UIButton *)sender {
+    UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+    window.userInteractionEnabled = NO;
+    
+    
+    [DreamMusicTool setPlayingMusic:[DreamMusicTool previousMusic]];
+    [self setupMusicData];
+    window.userInteractionEnabled = YES;
+
+    
+}
+
+- (IBAction)nextSong:(UIButton *)sender {
+    UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+    window.userInteractionEnabled = NO;
+    
+    
+    [DreamMusicTool setPlayingMusic:[DreamMusicTool nextMusic]];
+    [self setupMusicData];
+    window.userInteractionEnabled = YES;
     
 }
 
