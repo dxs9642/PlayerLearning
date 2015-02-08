@@ -11,6 +11,7 @@
 #import "DreamMusicTool.h"
 #import "DreamMusic.h"
 #import "DreamAudioTool.h"
+#import "DreamLRCView.h"
 
 @interface DreamPlayerController () <AVAudioPlayerDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *playerImage;
@@ -21,22 +22,25 @@
 @property (weak, nonatomic) IBOutlet UIView *progressView;
 @property (weak, nonatomic) IBOutlet UIButton *progressShow;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet DreamLRCView *LRCView;
+@property (weak, nonatomic) IBOutlet UIButton *lyricButton;
 
 
 
 @property (nonatomic,strong) DreamMusic *playingMusic;
-@property (nonatomic,strong) NSTimer *progressTimer;
 @property (nonatomic,strong) AVAudioPlayer *player;
+@property (nonatomic,strong) NSTimer *progressTimer;
+@property (nonatomic,strong) CADisplayLink *lrcTimer;
 
 
 
 - (IBAction)exit;
-- (IBAction)LyricOrPic:(UIButton *)sender;
 - (IBAction)progressTapGesture:(UITapGestureRecognizer *)sender;
 - (IBAction)sliderPanGesture:(UIPanGestureRecognizer *)sender;
 - (IBAction)playOrPause:(UIButton *)sender;
 - (IBAction)previousSong:(UIButton *)sender;
 - (IBAction)nextSong:(UIButton *)sender;
+- (IBAction)showLyrics;
 
 
 
@@ -80,8 +84,12 @@
         self.playButton.selected = YES;
         [self resetPlayingMusic:currentMusic];
         self.player = [DreamAudioTool playMusic:self.playingMusic.filename];
-        self.player.delegate = self;
         
+        [self addProgressTimer];
+        [self addLRCTimer];
+
+        self.player.delegate = self;
+        self.LRCView.lrcname = currentMusic.lrcname;
         self.duration.text = [self strWithTime:self.player.duration];
     }
     
@@ -89,9 +97,15 @@
 
 - (void)addProgressTimer{
     
-    if (self.progressTimer) {
-        [self removeProgressTimer];
+
+    [self removeProgressTimer];
+
+    if (![self.player isPlaying] || self.view.hidden == true) {
+        return;
     }
+
+    
+    [self updateCurrentTime];
     
     self.progressTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateCurrentTime) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self.progressTimer forMode:NSRunLoopCommonModes];
@@ -115,30 +129,62 @@
         self.slider.x = sliderMax * progress;
         self.progressView.width = sliderMax * progress + 21;
     }];
+    
+}
+
+- (void)addLRCTimer{
+    
+
+    [self removeLRCTimer];
+    
+    if (![self.player isPlaying] || self.view.hidden==true || self.LRCView.hidden == true) {
+        return;
+    }
+    
+    [self updateLRC];
+    
+    self.lrcTimer = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateLRC)];
+    [self.lrcTimer addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 
 }
+
+- (void)removeLRCTimer{
+    if (self.lrcTimer){
+        [self.lrcTimer invalidate];
+        self.lrcTimer = nil;
+    }
+}
+
+- (void)updateLRC{
+    self.LRCView.currentTime = self.player.currentTime;
+}
+
 
 - (NSString *)strWithTime:(NSTimeInterval)time{
     
     int minute = (int)time / 60;
     int second = (int)time % 60;
-    NSString *result = @"";
-    NSString *minuteString;
-    NSString *secondString;
-    if (minute<10) {
-        minuteString = [NSString stringWithFormat:@"0%d",minute];
-    }else{
-        minuteString = [NSString stringWithFormat:@"%d",minute];
-
-    }
-    result = [result stringByAppendingString:minuteString];
-    result = [result stringByAppendingString:@":"];
-    if (second<10) {
-        secondString = [NSString stringWithFormat:@"0%d",second];
-    }else{
-        secondString = [NSString stringWithFormat:@"%d",second];
-    }
-    result = [result stringByAppendingString:secondString];
+//    NSString *result = @"";
+//    NSString *minuteString;
+//    NSString *secondString;
+//    
+//    if (minute<10) {
+//        minuteString = [NSString stringWithFormat:@"0%d",minute];
+//    }else{
+//        minuteString = [NSString stringWithFormat:@"%d",minute];
+//    }
+//    
+//    
+//    result = [result stringByAppendingString:minuteString];
+//    result = [result stringByAppendingString:@":"];
+//    if (second<10) {
+//        secondString = [NSString stringWithFormat:@"0%d",second];
+//    }else{
+//        secondString = [NSString stringWithFormat:@"%d",second];
+//    }
+//    result = [result stringByAppendingString:secondString];
+    NSString *result = [NSString stringWithFormat:@"%02d:%02d",minute,second];
+    
     return  result;
     
     
@@ -163,14 +209,12 @@
 
     self.duration.text = @"00:00";
     [self removeProgressTimer];
+    [self removeLRCTimer];
     [UIView animateWithDuration:0.5 animations:^{
         self.slider.x = 0;
         self.progressView.width = 21;
 
     }];
-    
-    
-    [self addProgressTimer];
     
 }
 
@@ -187,10 +231,8 @@
     }];
     
     [self removeProgressTimer];
+    [self removeLRCTimer];
 
-}
-
-- (IBAction)LyricOrPic:(UIButton *)sender {
 }
 
 
@@ -249,14 +291,18 @@
 - (IBAction)playOrPause:(UIButton *)sender {
 
     if (self.playButton.selected) {
+        
         self.playButton.selected = NO;
         [DreamAudioTool pauseMusic:self.playingMusic.filename];
         [self removeProgressTimer];
-
+        [self removeLRCTimer];
+        
     }else{
+        
         self.playButton.selected = YES;
         [DreamAudioTool playMusic:self.playingMusic.filename];
         [self addProgressTimer];
+        [self addLRCTimer];
     }
 
     
@@ -270,6 +316,7 @@
     [DreamMusicTool setPlayingMusic:[DreamMusicTool previousMusic]];
     [self setupMusicData];
     [self addProgressTimer];
+    [self addLRCTimer];
     window.userInteractionEnabled = YES;
 
     
@@ -283,7 +330,45 @@
     [DreamMusicTool setPlayingMusic:[DreamMusicTool nextMusic]];
     [self setupMusicData];
     [self addProgressTimer];
+    [self addLRCTimer];
     window.userInteractionEnabled = YES;
+    
+}
+
+- (IBAction)showLyrics {
+    if (self.LRCView.hidden) {
+
+        [self.LRCView.layer removeAllAnimations];
+
+        
+        CATransition *anim = [CATransition animation];
+        anim.duration = 1.5;
+        anim.type = @"reveal";
+        [self.LRCView.layer addAnimation:anim forKey:nil];
+
+        
+        self.LRCView.hidden = NO;
+        self.lyricButton.selected = YES;
+        
+        [self addLRCTimer];
+        
+    }else{
+        
+        [self.LRCView.layer removeAllAnimations];
+
+        CATransition *anim = [CATransition animation];
+        anim.duration = 1.5;
+        anim.type = @"rippleEffect";
+        [self.LRCView.layer addAnimation:anim forKey:nil];
+
+        
+        self.LRCView.hidden = YES;
+        self.lyricButton.selected = NO;
+        
+        [self removeLRCTimer];
+
+    }
+    
     
 }
 
@@ -291,7 +376,13 @@
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
     [self playOrPause:self.playButton];
-    
 }
 
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player{
+    [self playOrPause:self.playButton];
+}
+
+- (void)audioPlayerEndInterruption:(AVAudioPlayer *)player{
+    [self playOrPause:self.playButton];
+}
 @end
