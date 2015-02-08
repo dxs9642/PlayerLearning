@@ -12,7 +12,7 @@
 #import "DreamMusic.h"
 #import "DreamAudioTool.h"
 
-@interface DreamPlayerController ()
+@interface DreamPlayerController () <AVAudioPlayerDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *playerImage;
 @property (weak, nonatomic) IBOutlet UILabel *songName;
 @property (weak, nonatomic) IBOutlet UILabel *playerName;
@@ -80,12 +80,19 @@
         self.playButton.selected = YES;
         [self resetPlayingMusic:currentMusic];
         self.player = [DreamAudioTool playMusic:self.playingMusic.filename];
+        self.player.delegate = self;
+        
         self.duration.text = [self strWithTime:self.player.duration];
     }
     
 }
 
 - (void)addProgressTimer{
+    
+    if (self.progressTimer) {
+        [self removeProgressTimer];
+    }
+    
     self.progressTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateCurrentTime) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self.progressTimer forMode:NSRunLoopCommonModes];
 }
@@ -209,27 +216,18 @@
     NSTimeInterval time;
     
     
-    self.slider.x += point.x;
-
-    if (self.slider.x >= 0){
+    int result = self.slider.x + point.x;
+    int totalWidth = self.view.width - self.slider.width;
+    if (result >= 0 && result <= totalWidth){
+        self.slider.x = result;
         self.progressShow.x = self.slider.x;
         self.progressView.width = self.slider.center.x;
-        CGFloat sliderMax = self.view.width - self.slider.width;
+        CGFloat sliderMax = totalWidth;
         double percent = self.slider.x / sliderMax;
         time = self.player.duration * percent;
         [self.slider setTitle:[self strWithTime:time] forState:UIControlStateNormal];
         [self.progressShow setTitle:[self strWithTime:time] forState:UIControlStateNormal];
-    }else{
-
-        time = 0;
     }
-
-
-    
-
-    
-
-
     
     if (sender.state == UIGestureRecognizerStateBegan){
 
@@ -253,11 +251,12 @@
     if (self.playButton.selected) {
         self.playButton.selected = NO;
         [DreamAudioTool pauseMusic:self.playingMusic.filename];
+        [self removeProgressTimer];
 
     }else{
         self.playButton.selected = YES;
         [DreamAudioTool playMusic:self.playingMusic.filename];
-
+        [self addProgressTimer];
     }
 
     
@@ -270,6 +269,7 @@
     
     [DreamMusicTool setPlayingMusic:[DreamMusicTool previousMusic]];
     [self setupMusicData];
+    [self addProgressTimer];
     window.userInteractionEnabled = YES;
 
     
@@ -282,7 +282,15 @@
     
     [DreamMusicTool setPlayingMusic:[DreamMusicTool nextMusic]];
     [self setupMusicData];
+    [self addProgressTimer];
     window.userInteractionEnabled = YES;
+    
+}
+
+
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
+    [self playOrPause:self.playButton];
     
 }
 
